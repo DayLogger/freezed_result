@@ -1,0 +1,15 @@
+name: freezed_result
+description: A Result<Success, Failure> that feels like a Freezed union.
+version: 1.0.0
+homepage: https://github.com/DayLogger/freezed_result
+
+environment:
+  sdk: ">=2.14.0 <3.0.0"
+
+dependencies:
+  collection: ^1.16.0
+  meta: ^1.7.0
+
+dev_dependencies:
+  lints: ^1.0.0
+  test: ^1.16.0
