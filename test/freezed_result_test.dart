@@ -57,8 +57,8 @@ void main() {
   });
 
   group('When closure does not throw', () {
-    test('the return value is wrapped in Result.success', () {
-      final subject = Result.catching(() => 12);
+    test('the return value is wrapped in Result.success', () async {
+      final subject = await Result.catching(() => 12);
       expect(subject.isSuccess, true);
       expect(subject.maybeValue, isNotNull);
       expect(subject.maybeValue, 12);
@@ -67,9 +67,9 @@ void main() {
   });
 
   group('When closure throws', () {
-    test('Result.catching() returns a Result.failure<Object>', () {
+    test('Result.catching() returns a Result.failure<Object>', () async {
       final shouldThrow = true;
-      final subject = Result.catching(
+      final subject = await Result.catching(
         () => shouldThrow ? throw StateError('') : 12,
       );
       expect(subject, isA<Result<int, Object>>());
@@ -83,8 +83,8 @@ void main() {
     group('a StateError', () {
       test(
           'Result.catching<_, StateError>() returns a Result.failure<StateError>',
-          () {
-        final subject = Result.catching<int, StateError>(
+          () async {
+        final subject = await Result.catching<int, StateError>(
           () => throw StateError(''),
         );
         expect(subject, isA<Result<int, StateError>>());

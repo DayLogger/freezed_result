@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart' show DeepCollectionEquality;
 import 'package:meta/meta.dart' show optionalTypeArgs;
 
@@ -127,16 +129,17 @@ abstract class Result<Success, Failure extends Object>
   const factory Result.failure(Failure error) =
       _FailureResult<Success, Failure>;
 
-  /// Creates a [success] result from the return value of
-  /// [closure]. Without an explicit type parameters, any
-  /// object thrown by [closure] is caught and returned in a
-  /// [failure] result. Specifying the type parameters will
-  /// catch only objects of type [E]. All others continue
-  /// uncaught. To specify [E] Dart requires that you also
-  /// specify [T].
-  static Result<T, E> catching<T, E extends Object>(T Function() closure) {
+  /// Creates a [success] result from the return value of an
+  /// _async_ [closure]. Without an explicit type
+  /// parameters, any object thrown by [closure] is caught
+  /// and returned in a [failure] result. Specifying the
+  /// type parameters will catch only objects of type [E].
+  /// All others continue uncaught. To specify [E] Dart
+  /// requires that you also specify [T].
+  static FutureOr<Result<T, E>> catching<T, E extends Object>(
+      FutureOr<T> Function() closure) async {
     try {
-      final value = closure();
+      final value = await closure();
       return Result.success(value);
     } on E catch (e) {
       return Result.failure(e);
