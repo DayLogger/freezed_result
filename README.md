@@ -113,6 +113,20 @@ Result<Nothing, DatabaseError> vacuumDatabase() {
 }
 ```
 
+You can use `catching` to create a `success` result from the return value of an _async_ closure.
+
+Without an explicit type parameters, any object thrown by the closure is caught and returned in a `failure` result. With type parameters, only that specific type will be caught. The rest will pass through uncaught.
+
+```dart
+final Result<String, Object> apiResult = await Result.catching(() => getSomeString());
+```
+
+```dart
+final Result<String, FormatException> result = await Result.catching<String, FormatException>(
+  () => formatTheThing(),
+);
+```
+
 ## Transforming Results
 
 Process and transform this `Result` into another `Result` as needed.
@@ -167,7 +181,7 @@ Parsing the `Person` may succeed, but parsing the `DateTime` may fail. In that c
 
 Use this to turn an error into either a success or another error. Most useful for recovering from errors which have a workaround.
 
-Here, [mapErrorToResult] is used to ignore errors which can be resolved by a cache lookup. An initial [failure] is transformed into a [success] whenever the required value is available in the local cache. The `_getPersonCache` function also translates both unrecoverable original `DioError`s, and any internal errors accessing the cache, into the more generic `FetchError`.
+Here, `mapErrorToResult` is used to ignore errors which can be resolved by a cache lookup. An initial `failure` is transformed into a `success` whenever the required value is available in the local cache. The `_getPersonCache` function also translates both unrecoverable original `DioError`s, and any internal errors accessing the cache, into the more generic `FetchError`.
 
 ```dart
 final Result<Person, DioError> raw = await dioGetApiPerson(id);
@@ -182,7 +196,7 @@ Aliased to `flatMapError` for Swift newcomers.
 
 ### mapToResultWhen
 
-Rarely used. This allows a single action to both try another operation on a success [value] which may fail in a new way with a new [error] type, and to recover from any original [error] with a [success] or translate the error into the new type of [Failure].
+Rarely used. This allows a single action to both try another operation on a success `value` which may fail in a new way with a new `error` type, and to recover from any original `error` with a `success` or translate the error into the new type of `Failure`.
 
 ```dart
 Result<Person, DioError> fetchPerson(int id) {
