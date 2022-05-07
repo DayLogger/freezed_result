@@ -1,6 +1,6 @@
 name: freezed_result
 description: A Result<Success, Failure> that feels like a Freezed union.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/DayLogger/freezed_result
 
 environment:
