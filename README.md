@@ -4,15 +4,15 @@ A `Result<Success, Failure>` that feels like a Freezed union. It represents the 
 
 `Failure` can be any type, and it usually represents a higher abstraction than just `Error` or `Exception`. It's very common to use a [Freezed Union](https://pub.dev/packages/freezed#union-types-and-sealed-classes) for `Failure` (e.g. `AuthFailure`) with cases for the different kinds of errors that can occur (e.g. `AuthFailure.network`, `AuthFailure.storage`, `AuthFailure.validation`).
 
-Because of this, we've made `Result` act a bit like a Freezed union (it has `when(success:, failure:)`), and the base class is generated from Freezed then we removed the parts that don't apply (`maybe*`) and adapted the others (`map*`) to feel more like a Result. We'll get into the details down below.
+Because of this, we've made `Result` act a bit like a Freezed union (it has `when(success:, failure:)`). The base class was generated from Freezed, then we removed the parts that don't apply (`maybe*`) and adapted the others (`map*`) to feel more like a Result. We'll get into the details down below.
 
 # Usage
 
-There are 3 main ways to interact with a `Result`: process them, create them, and transform them.
+There are 3 main ways to interact with a `Result`: process it, create it, and transform it.
 
 ## Processing Values and Errors
 
-Process the values by handling both `success` and `failure` cases using `when`.
+Process the values by handling both `success` and `failure` cases using `when`. This is preferred since you explicitly handle both cases.
 
 ```dart
 final result = fetchPerson(12);
@@ -85,7 +85,7 @@ Result<Person, FormatException> parsePerson(String json) {
 }
 ```
 
-`Result`s are really useful for `async` operations.
+`Result`s are really useful as return values for `async` operations.
 
 ```dart
 Future<Result<Person, ApiFailure>> fetchPerson(int id) async {
@@ -113,16 +113,18 @@ Result<Nothing, DatabaseError> vacuumDatabase() {
 }
 ```
 
-You can use `catching` to create a `success` result from the return value of an _async_ closure.
+You can use `catching` to create a `success` result from the return value of a closure. Unlike the constructors, you'll need to `await` the return value of this call.
 
-Without an explicit type parameters, any object thrown by the closure is caught and returned in a `failure` result. With type parameters, only that specific type will be caught. The rest will pass through uncaught.
+Without an explicit type parameters, any `Object` thrown by the closure is caught and returned in a `failure` result.
 
 ```dart
 final Result<String, Object> apiResult = await Result.catching(() => getSomeString());
 ```
 
+With type parameters, only that specific type will be caught. The rest will pass through uncaught.
+
 ```dart
-final Result<String, FormatException> result = await Result.catching<String, FormatException>(
+final result = await Result.catching<String, FormatException>(
   () => formatTheThing(),
 );
 ```
@@ -215,4 +217,4 @@ Aliased to `flatMapWhen`, though Swift doesn't have this equivalent.
 - [Result](https://pub.dev/packages/result) matches most of Swift's `Result` type.
 - [result_type](https://pub.dev/packages/result_type) which fully matches Swift, and some Rust.
 - [fluent_result](https://pub.dev/packages/fluent_result) allows multiple errors in a failure, and allows custom errors by extending a `ResultError` class.
-- [Dartz](https://pub.dev/packages/dartz) is a functional programming package whose `Either` type can be used as a substitute for `Result`. It has no concept of success and failure. Instead it uses `left` and `right`.
+- [Dartz](https://pub.dev/packages/dartz) is a functional programming package whose `Either` type can be used as a substitute for `Result`. It has no concept of success and failure. Instead it uses `left` and `right`. It uses the functional name `fold` to accomplish what we do with `when`.
