@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Relax constraint on `collection` dependency.
+
 ## 1.0.2
 
 - Fix small doc errors. Expand pubspec.yaml description.

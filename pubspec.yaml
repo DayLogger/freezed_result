@@ -1,6 +1,6 @@
 name: freezed_result
 description: A Result<Success, Failure> that feels like a Freezed union. It holds the outcome of an operation—a value of type Success, or an error of type Failure—and methods to work with it.
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/DayLogger/freezed_result
 
 environment:
