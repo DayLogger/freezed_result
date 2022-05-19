@@ -1,3 +1,7 @@
+## 1.0.3+1
+
+- Add links to more alternatives in README.md
+
 ## 1.0.3
 
 - Relax constraint on `collection` dependency.

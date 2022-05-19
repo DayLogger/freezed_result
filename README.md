@@ -218,3 +218,9 @@ Aliased to `flatMapWhen`, though Swift doesn't have this equivalent.
 - [result_type](https://pub.dev/packages/result_type) which fully matches Swift, and some Rust.
 - [fluent_result](https://pub.dev/packages/fluent_result) allows multiple errors in a failure, and allows custom errors by extending a `ResultError` class.
 - [Dartz](https://pub.dev/packages/dartz) is a functional programming package whose `Either` type can be used as a substitute for `Result`. It has no concept of success and failure. Instead it uses `left` and `right`. It uses the functional name `fold` to accomplish what we do with `when`.
+- [error_or](https://pub.dev/packages/error_or) is focused more on error handling, and defines only the success type; failure is always `Object`.
+- [result_class](https://pub.dev/packages/result_class) similar to Rust result.
+- [result_monad](https://pub.dev/packages/result_monad) also modeled on Rust, but with a strong focus on mapping.
+- [rust_like_result](https://pub.dev/packages/rust_like_result/example) also inspired by Rust.
+- [simple_result](https://pub.dev/packages/simple_result) inspired by Swift and Freezed. Also uses `when` like `freezed_result`.
+- [Super Enum](https://pub.dev/packages/super_enum) is a library with a larger goal, but it shows how to roll your own Result with the library.
